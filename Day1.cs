@@ -6,7 +6,7 @@ namespace ConsoleApp
 		{
 			int increaseResult = 0;
 
-			string[] dataStrArr = File.ReadAllLines(@".\\input_day1.txt");
+			string[] dataStrArr = File.ReadAllLines(@".\\inputs\\1.txt");
 
 			for (int i = 0; i < dataStrArr.Length; i++)
 			{

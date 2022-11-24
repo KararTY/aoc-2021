@@ -7,7 +7,7 @@ namespace ConsoleApp
 			int horizontalPosition = 0;
 			int depth = 0;
 
-			string[] dataStrArr = File.ReadAllLines(@".\\input_day2.txt");
+			string[] dataStrArr = File.ReadAllLines(@".\\inputs\\2.txt");
 
 			for (int i = 0; i < dataStrArr.Length; i++)
 			{
