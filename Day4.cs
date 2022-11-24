@@ -7,7 +7,7 @@ namespace ConsoleApp
 			public int num;
 			public bool check = false;
 		}
-		private bool checkIfWon (List<List<Entry>> bingoBoard)
+		private bool checkIfWon(List<List<Entry>> bingoBoard)
 		{
 			int yLength = bingoBoard.Count;
 			int xLength = bingoBoard[0].Count;
@@ -38,7 +38,7 @@ namespace ConsoleApp
 			for (int y = 0; y < bingoBoard.Count; y++)
 			{
 				List<Entry> row = bingoBoard[y];
-	
+
 				for (int x = 0; x < row.Count; x++)
 				{
 					Entry entry = row[x];
@@ -90,13 +90,14 @@ namespace ConsoleApp
 				lastCalledBingoNumber = bingoNumber;
 
 				bool won = false;
-				for (int boardIndex = 0; boardIndex < bingoBoards.Length; boardIndex++)
+				for (int boardIndex = 0; boardIndex < matrices.Count; boardIndex++)
 				{
 					findAndCheckNumber(matrices[boardIndex], bingoNumber);
-					
+
 					bool hasWon = checkIfWon(matrices[boardIndex]);
 
-					if (hasWon) {
+					if (hasWon)
+					{
 						winningMatrixIndex = boardIndex;
 						won = true;
 						break;
@@ -118,6 +119,55 @@ namespace ConsoleApp
 			}
 
 			Console.WriteLine(sumOfUnmarked * lastCalledBingoNumber);
+
+			Console.WriteLine("Part Two: {0}", this.PartTwo(bingoNumbers, matrices));
+		}
+		private int PartTwo(int[] bingoNumbers, List<List<List<Entry>>> matrices)
+		{
+			List<int> winningBoards = new List<int>();
+			int lastWinningMatrixIndex = -1;
+			int lastCalledBingoNumber = -1;
+			for (int i = 0; i < bingoNumbers.Length; i++)
+			{
+				int bingoNumber = bingoNumbers[i];
+				lastCalledBingoNumber = bingoNumber;
+
+				bool allWon = false;
+				for (int boardIndex = 0; boardIndex < matrices.Count; boardIndex++)
+				{
+					findAndCheckNumber(matrices[boardIndex], bingoNumber);
+
+					bool hasWon = checkIfWon(matrices[boardIndex]);
+
+					if (hasWon)
+					{
+						lastWinningMatrixIndex = boardIndex;
+						if (!winningBoards.Contains(boardIndex)) winningBoards.Add(boardIndex);
+					}
+
+					if (winningBoards.Count == matrices.Count)
+					{
+						allWon = true;
+						break;
+					}
+				}
+
+				if (allWon) break;
+			}
+
+			// Calculate sum of winning board
+			int sumOfUnmarked = 0;
+			for (int y = 0; y < matrices[lastWinningMatrixIndex].Count; y++)
+			{
+				List<Entry> row = matrices[lastWinningMatrixIndex][y];
+				for (int x = 0; x < row.Count; x++)
+				{
+					Entry entry = row[x];
+					if (!entry.check) sumOfUnmarked += entry.num;
+				}
+			}
+
+			return sumOfUnmarked * lastCalledBingoNumber;
 		}
 	}
 }
